@@ -8,9 +8,6 @@
  */
 package org.chocosolver.pf4cs;
 
-import org.kohsuke.args4j.CmdLineException;
-import org.kohsuke.args4j.CmdLineParser;
-
 /**
  * A class that provides a pattern to declare a model and solve it. <br/>
  * The methods are considered to be called in the following order:
@@ -25,21 +22,10 @@ import org.kohsuke.args4j.CmdLineParser;
  * @author Charles Prud'homme
  * @since 03/01/2017
  */
-public interface IProblem extends IUpDown {
+public interface IProblem<T> extends IUpDown {
 
     @Override
-    default void setUp(String... args) throws SetUpException {
-        CmdLineParser parser = new CmdLineParser(this);
-        try {
-            parser.parseArgument(args);
-        } catch (CmdLineException e) {
-            System.err.println(e.getMessage());
-            System.err.println("java " + this.getClass() + " [options...]");
-            parser.printUsage(System.err);
-            System.err.println();
-            throw new SetUpException("Invalid problem options");
-        }
-    }
+    void setUp(String... args) throws SetUpException;
 
     /**
      * Call the model creation.
@@ -51,6 +37,12 @@ public interface IProblem extends IUpDown {
      */
     void buildModel();
 
+    /**
+     * Get constraint model object.
+     * @return the current model
+     */
+    T getModel();
+   
     /**
      * Call search configuration.
      * For optimization problems, define the objective if it has not been done in {@link IProblem#buildModel()}. 
