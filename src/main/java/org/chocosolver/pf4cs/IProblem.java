@@ -28,7 +28,7 @@ import org.kohsuke.args4j.CmdLineParser;
 public interface IProblem extends IUpDown {
 
     @Override
-    default void setUp(String... args) throws SetUpException{
+    default void setUp(String... args) throws SetUpException {
         CmdLineParser parser = new CmdLineParser(this);
         try {
             parser.parseArgument(args);
@@ -42,17 +42,24 @@ public interface IProblem extends IUpDown {
     }
 
     /**
-     * Call the model creation
+     * Call the model creation.
+     * <ul>
+     * <li>add variables</li>
+     * <li>post constraints</li>
+     * <li>(for optimization problems) define the objective(s) here or later in {@link IProblem#configureSearch()})</li>
+     * </ul>
      */
-	void buildModel();
+    void buildModel();
 
     /**
-     * Call search configuration
+     * Call search configuration.
+     * For optimization problems, define the objective if it has not been done in {@link IProblem#buildModel()}. 
      */
-	void configureSearch();
+    void configureSearch();
 
-	/**
-     * Call problem resolution
+    /**
+     * Call problem resolution. 
+     * For optimization problems, the objective(s) must be defined before this call. 
      */
-	void solve();
+    void solve();
 }
