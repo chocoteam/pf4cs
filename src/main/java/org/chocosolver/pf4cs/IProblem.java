@@ -21,8 +21,9 @@ package org.chocosolver.pf4cs;
  *
  * @author Charles Prud'homme
  * @since 03/01/2017
+ * @param M M the constraint model object built thanks to this interface (designed to be library independant except for this) 
  */
-public interface IProblem<T> extends IUpDown {
+public interface IProblem<M> extends IUpDown {
 
     @Override
     void setUp(String... args) throws SetUpException;
@@ -39,9 +40,10 @@ public interface IProblem<T> extends IUpDown {
 
     /**
      * Get constraint model object.
+     * @param M the constraint model object      
      * @return the current model
      */
-    T getModel();
+    M getModel();
    
     /**
      * Call search configuration.
